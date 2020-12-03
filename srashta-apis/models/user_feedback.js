@@ -6,10 +6,19 @@ module.exports = (sequelize, DataTypes) => {
     name:DataTypes.STRING,
     gender:DataTypes.STRING,
     age:DataTypes.INTEGER,
-    ratingType:DataTypes.STRING
+    ratingType:DataTypes.STRING,
+    // id:{
+    //   allowNull: false,
+    //   primaryKey: true,
+    //   type: DataTypes.INTEGER,
+    //   defaultValue: DataTypes.UUIDV4
+    // }
   }, {});
-  user_feedbacks.associate = function(models) {
-    // associations can be defined here
+  user_feedbacks.associate = function(models) { 
+    user_feedbacks.hasMany(models.user_feedback_detailes, {
+      foreignKey: 'feedbackId',
+      onDelete: 'CASCADE'
+    });
   };
   return user_feedbacks;
 };

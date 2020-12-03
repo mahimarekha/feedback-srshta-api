@@ -4,8 +4,7 @@ const feedbackController = require('../controllers/feedback-controller');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send([{ name: 'Express' }, { name: 'abc' }]);
-
 });
 router.post('/create',feedbackController.create);
-
+router.post('/retrive',feedbackController.retrive);
 module.exports = router;

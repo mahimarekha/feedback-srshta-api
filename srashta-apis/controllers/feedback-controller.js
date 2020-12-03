@@ -5,6 +5,7 @@ const userFeedbackDetails = db.user_feedback_detailes;
 module.exports = {
   create: (req, res) => {
     function createFeedback(input, data, res) {
+      console.log(data)
       asyncLoop(
         input.userFeedback,
         function (item, next) {
@@ -14,14 +15,17 @@ module.exports = {
             userAnswer: item.userAnswer,
             feedbackId: data.id,
           };
+          console.log(data)
+          console.log(finalPrepareJSON);
+          console.log("dddd");
           userFeedbackDetails
             .create(finalPrepareJSON)
             .then((data) => {
               next();
             })
             .catch((e) => {
-              if (err) {
-                next(err);
+              if (e) {
+                next(e);
                 return;
               }
             });
@@ -39,6 +43,7 @@ module.exports = {
     userFeedback
       .create(req.body)
       .then((data) => {
+        console.log(data);
         if (data) {
           createFeedback(req.body, data, res);
           //res.status(200).send(data)
@@ -49,12 +54,16 @@ module.exports = {
         res.status(500).send("feedback has failed, try again.");
       });
   },
-  getrating: (req, res) => {
-    QAMODAL.findAll({
+  retrive: (req, res) => {
+    console.log( req.body.userId)
+    userFeedback.findAll({
       where: {
+        categoryId: req.body.categoryId,
         userId: req.body.userId,
-        ratingTypeId: req.body.ratingType,
       },
+      include: [{
+        model: userFeedbackDetails
+      }]
     })
       .then(function (queryResult) {
         res.send(queryResult);
